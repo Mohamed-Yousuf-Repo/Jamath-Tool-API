@@ -11,5 +11,5 @@ public partial class role
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual ICollection<auth> auths { get; set; } = new List<auth>();
+    public virtual ICollection<authuser> authusers { get; set; } = new List<authuser>();
 }

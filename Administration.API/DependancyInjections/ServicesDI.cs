@@ -1,6 +1,5 @@
-﻿using Administration.Domain.Interfaces.IServices;
+﻿using Administration.Domain.IServices;
 using Administration.Services.Services;
-using System.Runtime.CompilerServices;
 
 namespace Administration.API.DependancyInjections
 {
@@ -9,6 +8,7 @@ namespace Administration.API.DependancyInjections
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ITokenService, TokenService>();
             return services;
         }
     }

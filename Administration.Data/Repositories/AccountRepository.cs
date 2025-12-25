@@ -14,19 +14,29 @@ namespace Administration.Data.Repositories
             _context = context;
         }
 
-        public async Task CreateDefaultUsers(List<auth> users)
+        /// <inheritdoc />
+        public async Task CreateDefaultUsers(List<authuser> users)
         {
             await _context.AddRangeAsync(users);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<auth>> ExistDefaultUsers()
+        /// <inheritdoc />
+        public async Task<List<authuser>> ExistDefaultUsers()
         {
-            var defaultUsers = await _context.auths.Where(x => x.Role.Name == "Developer" || x.Role.Name == "Admin").ToListAsync();
+            var defaultUsers = await _context.authusers.Where(x => x.Role.Name == "Developer" || x.Role.Name == "Admin").ToListAsync();
             return defaultUsers;
         }
-                
-        public async Task ResetDefaultUserPassword(List<auth> existDefaultUsers)
+
+        /// <inheritdoc />
+        public async Task<authuser?> GetUserByUsername(string username)
+        {
+            var user = await _context.authusers.FirstOrDefaultAsync(x => x.Username == username && x.IsActive);
+            return user;
+        }
+
+        /// <inheritdoc />
+        public async Task ResetDefaultUserPassword(List<authuser> existDefaultUsers)
         {
             _context.UpdateRange(existDefaultUsers);
             await _context.SaveChangesAsync();

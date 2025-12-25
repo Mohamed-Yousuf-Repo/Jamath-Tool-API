@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Administration.Data.Entities;
 
-public partial class auth
+public partial class authuser
 {
     public int Id { get; set; }
 
@@ -13,7 +13,7 @@ public partial class auth
 
     public string PasswordHash { get; set; } = null!;
 
-    public int? UserId { get; set; }
+    public Guid? UserId { get; set; }
 
     public bool IsActive { get; set; }
 

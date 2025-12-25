@@ -14,7 +14,7 @@ public partial class AdministrationDbContext : DbContext
 
     public virtual DbSet<__efmigrationshistory> __efmigrationshistories { get; set; }
 
-    public virtual DbSet<auth> auths { get; set; }
+    public virtual DbSet<authuser> authusers { get; set; }
 
     public virtual DbSet<role> roles { get; set; }
 
@@ -36,11 +36,11 @@ public partial class AdministrationDbContext : DbContext
             entity.Property(e => e.ProductVersion).HasMaxLength(32);
         });
 
-        modelBuilder.Entity<auth>(entity =>
+        modelBuilder.Entity<authuser>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("auth");
+            entity.ToTable("authuser");
 
             entity.HasIndex(e => e.RoleId, "IX_Auth_RoleId");
 
@@ -54,7 +54,7 @@ public partial class AdministrationDbContext : DbContext
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
             entity.Property(e => e.Username).HasMaxLength(100);
 
-            entity.HasOne(d => d.Role).WithMany(p => p.auths)
+            entity.HasOne(d => d.Role).WithMany(p => p.authusers)
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Auth_Role");
