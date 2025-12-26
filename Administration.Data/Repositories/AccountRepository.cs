@@ -31,7 +31,7 @@ namespace Administration.Data.Repositories
         /// <inheritdoc />
         public async Task<authuser?> GetUserByUsername(string username)
         {
-            var user = await _context.authusers.FirstOrDefaultAsync(x => x.Username == username && x.IsActive);
+            var user = await _context.authusers.Include(i => i.Role).FirstOrDefaultAsync(x => x.Username == username && x.IsActive);
             return user;
         }
 

@@ -7,25 +7,27 @@ public partial class user
 {
     public Guid Id { get; set; }
 
-    public string Name { get; set; } = null!;
+    public ulong ProfileNumber { get; set; }
 
-    public string FatherId { get; set; } = null!;
+    public string FirstName { get; set; } = null!;
 
-    public string? FatherName { get; set; }
+    public string? LastName { get; set; }
 
-    public string? FamilyName { get; set; }
+    public Guid FatherId { get; set; }
+
+    public string FamilyName { get; set; } = null!;
 
     public DateOnly DOB { get; set; }
 
-    public string Address { get; set; } = null!;
-
-    public string? MotherName { get; set; }
-
-    public string? BloodGroup { get; set; }
+    public string MotherName { get; set; } = null!;
 
     public string ContactNumber { get; set; } = null!;
 
-    public bool IsAlive { get; set; }
+    public string? Email { get; set; }
+
+    public string BloodGroup { get; set; } = null!;
+
+    public bool? IsAlive { get; set; }
 
     public bool IsMarried { get; set; }
 
@@ -33,9 +35,11 @@ public partial class user
 
     public string? AadhaarId { get; set; }
 
-    public string? PhotoPath { get; set; }
+    public string PhotoPath { get; set; } = null!;
 
     public DateTime CreatedDate { get; set; }
 
     public DateTime ModifiedDate { get; set; }
+
+    public virtual ICollection<jamathmember> jamathmembers { get; set; } = new List<jamathmember>();
 }

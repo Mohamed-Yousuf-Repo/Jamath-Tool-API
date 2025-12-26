@@ -12,4 +12,6 @@ public partial class role
     public DateTime CreatedAt { get; set; }
 
     public virtual ICollection<authuser> authusers { get; set; } = new List<authuser>();
+
+    public virtual ICollection<jamathmember> jamathmembers { get; set; } = new List<jamathmember>();
 }

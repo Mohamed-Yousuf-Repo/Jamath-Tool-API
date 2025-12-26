@@ -72,7 +72,8 @@ namespace Administration.Services.Services
             return new UserModel
             {
                 UserId = user.UserId,
-                Username = user.Username
+                Username = user.Username,
+                Role = user.Role.Name
             };
         }
 

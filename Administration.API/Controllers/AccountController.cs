@@ -1,5 +1,6 @@
 ﻿using Administration.Domain.IServices;
 using Administration.Domain.Models.RequestModels;
+using Administration.Domain.Models.ResponseModels;
 using Administration.Services.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,11 +37,11 @@ namespace Administration.API.Controllers
                 return Unauthorized("Invalid username or password.");
 
             var token = _tokenService.GenerateToken(user);
-            return Ok(new
+            return Ok(new LoginResponseModel
             {
-                access_token = token,
-                token_type = "Bearer",
-                expires_in = 3600
+                Token = token,
+                TokenType = "Bearer",
+                ExpiresInSeconds = 3600
             });
         }
 

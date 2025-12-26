@@ -16,6 +16,10 @@ public partial class AdministrationDbContext : DbContext
 
     public virtual DbSet<authuser> authusers { get; set; }
 
+    public virtual DbSet<jamath> jamaths { get; set; }
+
+    public virtual DbSet<jamathmember> jamathmembers { get; set; }
+
     public virtual DbSet<role> roles { get; set; }
 
     public virtual DbSet<user> users { get; set; }
@@ -60,6 +64,52 @@ public partial class AdministrationDbContext : DbContext
                 .HasConstraintName("FK_Auth_Role");
         });
 
+        modelBuilder.Entity<jamath>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("jamath");
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.EndDate).HasColumnType("datetime");
+            entity.Property(e => e.StartDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<jamathmember>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("jamathmember");
+
+            entity.HasIndex(e => e.RoleId, "JamathMember_role_FK");
+
+            entity.HasIndex(e => e.UserId, "JamathMember_user_FK");
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.jamathmembers)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("JamathMember_role_FK");
+
+            entity.HasOne(d => d.User).WithMany(p => p.jamathmembers)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("JamathMember_user_FK");
+        });
+
         modelBuilder.Entity<role>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -78,22 +128,28 @@ public partial class AdministrationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.HasIndex(e => e.AadhaarId, "IX_Users_AadhaarId").IsUnique();
+            entity.ToTable("user");
 
-            entity.Property(e => e.Id)
-                .UseCollation("ascii_general_ci")
-                .HasCharSet("ascii");
+            entity.HasIndex(e => e.ProfileNumber, "UQ_User_ProfileNumber").IsUnique();
+
             entity.Property(e => e.AadhaarId).HasMaxLength(20);
-            entity.Property(e => e.Address).HasMaxLength(250);
             entity.Property(e => e.BloodGroup).HasMaxLength(10);
             entity.Property(e => e.ContactNumber).HasMaxLength(15);
-            entity.Property(e => e.CreatedDate).HasMaxLength(6);
+            entity.Property(e => e.CreatedDate)
+                .HasMaxLength(6)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+            entity.Property(e => e.Email).HasMaxLength(150);
             entity.Property(e => e.FamilyName).HasMaxLength(50);
-            entity.Property(e => e.FatherId).HasMaxLength(50);
-            entity.Property(e => e.FatherName).HasMaxLength(50);
-            entity.Property(e => e.ModifiedDate).HasMaxLength(6);
-            entity.Property(e => e.MotherName).HasMaxLength(250);
-            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.IsAlive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
+            entity.Property(e => e.LastName).HasMaxLength(50);
+            entity.Property(e => e.ModifiedDate)
+                .HasMaxLength(6)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+            entity.Property(e => e.MotherName).HasMaxLength(100);
             entity.Property(e => e.PhotoPath).HasMaxLength(500);
         });
 
